@@ -15,7 +15,7 @@ class RegisterPresenter @Inject constructor() : BasePresenter<RegisterView>() {
     @Inject
     lateinit var userService: UserServiceIml
 
-    fun register(mobile:String,verifyCode:String,pwd:String){
+    fun register(mobile: String, verifyCode: String, pwd: String) {
 
 //        val userService = UserServiceIml()
 
@@ -28,17 +28,20 @@ class RegisterPresenter @Inject constructor() : BasePresenter<RegisterView>() {
 //                        mView.onRegisterResult(t)
 //                    }
 //                })
+        if (!checkNetWorkIsAvailable()) return
 
-        userService.register(mobile,verifyCode,pwd)
-                .execut(object : BaseSubscriber<Boolean>(){
+        mView.showLoading()
+
+        userService.register(mobile, verifyCode, pwd)
+                .execut(object : BaseSubscriber<Boolean>(mView) {
                     override fun onNext(t: Boolean) {
                         if (t) {
                             mView.onRegisterResult("注册成功")
-                        }else{
+                        } else {
                             mView.onRegisterResult("注册失败")
                         }
                     }
-                },lifecycleProvider)
+                }, lifecycleProvider)
 
 
     }

@@ -12,14 +12,18 @@ class BaseApplication : Application() {
 
     lateinit var appComponent: AppComponent
 
+
+//    companion object {
+//        lateinit var context: Context
+//    }
+
     override fun onCreate() {
         super.onCreate()
-
+//        context = this
         initAppInjection()
     }
 
     private fun initAppInjection() {
-
         appComponent = DaggerAppComponent.builder().appModule(AppModule(this)).build()
     }
 }

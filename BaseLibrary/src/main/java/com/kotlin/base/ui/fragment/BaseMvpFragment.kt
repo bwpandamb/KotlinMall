@@ -1,6 +1,7 @@
 package com.kotlin.base.ui.fragment
 
 import android.os.Bundle
+import android.widget.Toast
 import com.kotlin.base.common.BaseApplication
 import com.kotlin.base.injection.component.ActivityComponent
 import com.kotlin.base.injection.component.DaggerActivityComponent
@@ -21,7 +22,8 @@ abstract class BaseMvpFragment<T : BasePresenter<*>> : BaseFragment(), BaseView 
     override fun hideLoading() {
     }
 
-    override fun onError() {
+    override fun onError(errorText: String) {
+        Toast.makeText(context, errorText, Toast.LENGTH_SHORT).show()
     }
 
     @Inject

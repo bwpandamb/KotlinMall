@@ -1,6 +1,8 @@
 package com.kotlin.user.service.impl
 
-import com.kotlin.base.rx.BaseFunBoolean
+import com.kotlin.base.ext.convert
+import com.kotlin.base.ext.convertBoolean
+import com.kotlin.user.data.protocol.UserInfo
 import com.kotlin.user.data.repository.UserRepository
 import com.kotlin.user.service.UserService
 import rx.Observable
@@ -10,6 +12,7 @@ import javax.inject.Inject
  * Created by mac on 2018/4/10.
  */
 class UserServiceIml @Inject constructor(): UserService {
+
     @Inject
     lateinit var userRepository :UserRepository
 
@@ -29,7 +32,12 @@ class UserServiceIml @Inject constructor(): UserService {
 //                })
 
         return userRepository.register(mobile, pwd, verifyCode)
-                .flatMap(BaseFunBoolean())
+                .convertBoolean()
+    }
+
+    override fun login(mobile: String, pwd: String, pushId: String): Observable<UserInfo> {
+        return userRepository.login(mobile, pwd, pushId)
+                .convert()
     }
 
 }

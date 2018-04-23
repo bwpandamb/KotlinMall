@@ -9,5 +9,4 @@ interface RegisterView : BaseView {
 
     fun onRegisterResult(result: String)
 
-
 }
