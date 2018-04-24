@@ -11,10 +11,11 @@ import javax.inject.Inject
 /**
  * Created by mac on 2018/4/10.
  */
-class UserServiceIml @Inject constructor(): UserService {
+class UserServiceIml @Inject constructor() : UserService {
+
 
     @Inject
-    lateinit var userRepository :UserRepository
+    lateinit var userRepository: UserRepository
 
     override fun register(mobile: String, verifyCode: String, pwd: String): Observable<Boolean> {
 
@@ -31,13 +32,31 @@ class UserServiceIml @Inject constructor(): UserService {
 //                    }
 //                })
 
-        return userRepository.register(mobile, pwd, verifyCode)
-                .convertBoolean()
+        return userRepository.register(mobile, pwd, verifyCode).convertBoolean()
     }
 
     override fun login(mobile: String, pwd: String, pushId: String): Observable<UserInfo> {
-        return userRepository.login(mobile, pwd, pushId)
-                .convert()
+        return userRepository.login(mobile, pwd, pushId).convert()
     }
 
+    /*
+        忘记密码
+     */
+    override fun forgetPwd(mobile: String, verifyCode: String): Observable<Boolean> {
+        return userRepository.forgetPwd(mobile, verifyCode).convertBoolean()
+    }
+
+    /*
+        重置密码
+     */
+    override fun resetPwd(mobile: String, pwd: String): Observable<Boolean> {
+        return userRepository.resetPwd(mobile, pwd).convertBoolean()
+    }
+
+    /*
+        修改用户资料
+     */
+    override fun editUser(userIcon: String, userName: String, userGender: String, userSign: String): Observable<UserInfo> {
+        return userRepository.editUser(userIcon,userName,userGender,userSign).convert()
+    }
 }

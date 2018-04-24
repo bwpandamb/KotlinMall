@@ -13,7 +13,9 @@ import com.kotlin.user.injection.component.DaggerUserComponent
 import com.kotlin.user.injection.module.UserModule
 import com.kotlin.user.presenter.LoginPresenter
 import com.kotlin.user.presenter.view.LoginView
+import com.kotlin.user.utils.UserPrefsUtils
 import kotlinx.android.synthetic.main.activity_login.*
+import org.jetbrains.anko.startActivity
 
 class LoginActivity : BaseMvpActivity<LoginPresenter>(), LoginView, View.OnClickListener {
 
@@ -23,8 +25,6 @@ class LoginActivity : BaseMvpActivity<LoginPresenter>(), LoginView, View.OnClick
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-//        mPersenter = RegisterPresenter()//使用dagger实例化，这里就不需要了
-//        mPersenter.mView = this
         initView()
     }
 
@@ -38,6 +38,7 @@ class LoginActivity : BaseMvpActivity<LoginPresenter>(), LoginView, View.OnClick
         //这样的方法是无法获取到的，必须让其提供内部的方法来获取，如下实现
 //        mHeaderBar.mRightTv.setOnClickListener(this)
         mHeaderBar.getRightView().setOnClickListener(this)
+        mForgetPwdTv.setOnClickListener(this)
     }
 
     //通过抽象方法让子类实现必须实现的方法，父类控制流程
@@ -52,6 +53,8 @@ class LoginActivity : BaseMvpActivity<LoginPresenter>(), LoginView, View.OnClick
      */
     override fun onLoginResult(result: UserInfo) {
         Toast.makeText(this@LoginActivity, result.userName + "登陆成功", Toast.LENGTH_SHORT).show()
+        UserPrefsUtils.putUserInfo(result)
+        startActivity<UserInfoActivity>()
     }
 
     override fun onClick(view: View) {
@@ -61,6 +64,9 @@ class LoginActivity : BaseMvpActivity<LoginPresenter>(), LoginView, View.OnClick
             }
             R.id.mLoginBtn -> {
                 mPersenter.login(mMobileEt.text.toString(), mPwdEt.text.toString(), "")
+            }
+            R.id.mForgetPwdTv -> {
+                startActivity(Intent(this@LoginActivity, ForgetPwdActivity::class.java))
             }
         }
 
