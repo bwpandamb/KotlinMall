@@ -4,9 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import com.alibaba.android.arouter.facade.annotation.Route
 import com.kotlin.base.common.AppManager
 import com.kotlin.base.ext.enable
 import com.kotlin.base.ui.activity.BaseMvpActivity
+import com.kotlin.provider.router.RouterPath
 import com.kotlin.user.R
 import com.kotlin.user.data.protocol.UserInfo
 import com.kotlin.user.injection.component.DaggerUserComponent
@@ -15,8 +17,8 @@ import com.kotlin.user.presenter.LoginPresenter
 import com.kotlin.user.presenter.view.LoginView
 import com.kotlin.user.utils.UserPrefsUtils
 import kotlinx.android.synthetic.main.activity_login.*
-import org.jetbrains.anko.startActivity
 
+@Route(path = RouterPath.UserCenter.PATH_LOGIN)
 class LoginActivity : BaseMvpActivity<LoginPresenter>(), LoginView, View.OnClickListener {
 
     private var pressTime: Long = 0
@@ -35,7 +37,7 @@ class LoginActivity : BaseMvpActivity<LoginPresenter>(), LoginView, View.OnClick
         mLoginBtn.enable(mMobileEt, { isBtnEnable() })
         mLoginBtn.enable(mPwdEt, { isBtnEnable() })
         mLoginBtn.setOnClickListener(this)
-        //这样的方法是无法获取到的，必须让其提供内部的方法来获取，如下实现
+        //这样的方法是无法获取到mRightTv的，必须让其提供内部的方法来获取，如下实现
 //        mHeaderBar.mRightTv.setOnClickListener(this)
         mHeaderBar.getRightView().setOnClickListener(this)
         mForgetPwdTv.setOnClickListener(this)
@@ -54,7 +56,8 @@ class LoginActivity : BaseMvpActivity<LoginPresenter>(), LoginView, View.OnClick
     override fun onLoginResult(result: UserInfo) {
         Toast.makeText(this@LoginActivity, result.userName + "登陆成功", Toast.LENGTH_SHORT).show()
         UserPrefsUtils.putUserInfo(result)
-        startActivity<UserInfoActivity>()
+//        startActivity<UserInfoActivity>()
+        finish()
     }
 
     override fun onClick(view: View) {
@@ -81,7 +84,7 @@ class LoginActivity : BaseMvpActivity<LoginPresenter>(), LoginView, View.OnClick
             Toast.makeText(this, "再点击一次退出程序", Toast.LENGTH_SHORT).show()
             pressTime = time
         } else {
-            AppManager.instantce.exitApp(this)
+            AppManager.instance.exitApp(this)
         }
     }
 

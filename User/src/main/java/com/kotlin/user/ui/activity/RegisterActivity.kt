@@ -74,7 +74,7 @@ class RegisterActivity : BaseMvpActivity<RegisterPresenter>(), RegisterView, Vie
             Toast.makeText(this, "再点击一次退出程序", Toast.LENGTH_SHORT).show()
             pressTime = time
         } else {
-            AppManager.instantce.exitApp(this)
+            AppManager.instance.exitApp(this)
         }
     }
 
