@@ -8,6 +8,7 @@
 
         <activity android:name="com.kotlin.goods.ui.activity.GoodsActivity" />
         <activity android:name="com.kotlin.goods.ui.activity.SearchGoodsActivity" />
+        <activity android:name="com.kotlin.goods.ui.activity.CartActivity" />
         <activity android:name="com.kotlin.goods.ui.activity.GoodsDetailActivity"
             android:theme="@style/AppTheme.Black"
             />

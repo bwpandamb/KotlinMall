@@ -4,7 +4,13 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import com.ashokvarma.bottomnavigation.BottomNavigationBar
+import com.eightbitlab.rxbus.Bus
+import com.eightbitlab.rxbus.registerInBus
 import com.kotlin.base.common.AppManager
+import com.kotlin.base.utils.AppPrefsUtils
+import com.kotlin.goods.common.GoodsConstant
+import com.kotlin.goods.event.UpdateCartSizeEvent
+import com.kotlin.goods.ui.fragment.CartFragment
 import com.kotlin.goods.ui.fragment.CategoryFragment
 import com.kotlin.mall.R
 import com.kotlin.mall.ui.fragment.HomeFragment
@@ -23,7 +29,7 @@ class MainActivity : AppCompatActivity() {
     //商品分类Fragment
     private val mCategoryFragment by lazy { CategoryFragment() }
     //购物车Fragment
-    private val mCartFragment by lazy { HomeFragment() }
+    private val mCartFragment by lazy { CartFragment() }
     //消息Fragment
     private val mMsgFragment by lazy { HomeFragment() }
     //"我的"Fragment
@@ -32,12 +38,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        mBottomNavBar.checkMsgBadge(false)
-        mBottomNavBar.checkCartBadge(20)
+//        mBottomNavBar.checkMsgBadge(false)
+//        mBottomNavBar.checkCartBadge(20)
 
         initFragment()
         initBottomNav()
         changeFragment(0)
+        initObserve()
+        loadCartSize()
 
 
 
@@ -93,6 +101,39 @@ class MainActivity : AppCompatActivity() {
         }
         manager.show(mStack[position])
         manager.commit()
+    }
+
+    /*
+        初始化监听，购物车数量变化及消息标签是否显示
+     */
+    private fun initObserve(){
+        Bus.observe<UpdateCartSizeEvent>()
+                .subscribe {
+                    loadCartSize()
+                }.registerInBus(this)
+
+//        Bus.observe<MessageBadgeEvent>()
+//                .subscribe {
+//                    t: MessageBadgeEvent ->
+//                    run {
+//                        mBottomNavBar.checkMsgBadge(t.isVisible)
+//                    }
+//                }.registerInBus(this)
+    }
+
+    /*
+        加载购物车数量
+     */
+    private fun loadCartSize(){
+        mBottomNavBar.checkCartBadge(AppPrefsUtils.getInt(GoodsConstant.SP_CART_SIZE))
+    }
+
+    /*
+        取消Bus事件监听
+     */
+    override fun onDestroy() {
+        super.onDestroy()
+        Bus.unregister(this)
     }
 
 

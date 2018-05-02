@@ -16,8 +16,10 @@ import com.kotlin.base.utils.YuanFenConverter
 import com.kotlin.base.widgets.BannerImageLoader
 import com.kotlin.goods.common.GoodsConstant
 import com.kotlin.goods.data.protocol.Goods
+import com.kotlin.goods.event.AddCartEvent
 import com.kotlin.goods.event.GoodsDetailImageEvent
 import com.kotlin.goods.event.SkuChangedEvent
+import com.kotlin.goods.event.UpdateCartSizeEvent
 import com.kotlin.goods.injection.component.DaggerGoodsComponent
 import com.kotlin.goods.injection.module.GoodsModule
 import com.kotlin.goods.presenter.GoodsDetailPresenter
@@ -39,7 +41,7 @@ class GoodsDetailTabOneFragment : BaseMvpFragment<GoodsDetailPresenter>(), Goods
     //SKU弹层退场动画
     private lateinit var mAnimationEnd: Animation
 
-    private var mCurGoods:Goods? = null
+    private var mCurGoods: Goods? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -97,7 +99,7 @@ class GoodsDetailTabOneFragment : BaseMvpFragment<GoodsDetailPresenter>(), Goods
      */
     private fun initSkuPop() {
         mSkuPop = GoodsSkuPopView(activity)
-        mSkuPop.setOnDismissListener{
+        mSkuPop.setOnDismissListener {
             (activity as BaseActivity).contentView!!.startAnimation(mAnimationEnd)
         }
     }
@@ -122,18 +124,18 @@ class GoodsDetailTabOneFragment : BaseMvpFragment<GoodsDetailPresenter>(), Goods
      */
     override fun onGetGoodsDetailResult(result: Goods) {
 
-        mCurGoods = result
+        mCurGoods = result //这里获取到商品后存一个全局变量，以便后面加入购物车传入数据
 
-        mGoodsDetailBanner.setImages(result.goodsBanner.split(","))
+        mGoodsDetailBanner.setImages(result.goodsBanner.split(",")) //给banner设置滚动的图片地址，这里是...逗号分隔的一个参数，使用split直接获取List集合
         mGoodsDetailBanner.start()
 
-        mGoodsDescTv.text = result.goodsDesc
-        mGoodsPriceTv.text = YuanFenConverter.changeF2YWithUnit(result.goodsDefaultPrice)
-        mSkuSelectedTv.text = result.goodsDefaultSku
+        mGoodsDescTv.text = result.goodsDesc    //商品描叙详情
+        mGoodsPriceTv.text = YuanFenConverter.changeF2YWithUnit(result.goodsDefaultPrice) //商品价格（要转换一下）
+        mSkuSelectedTv.text = result.goodsDefaultSku //商品sku，也就是不同的属性
 
-        Bus.send(GoodsDetailImageEvent(result.goodsDetailOne, result.goodsDetailTwo))
+        Bus.send(GoodsDetailImageEvent(result.goodsDetailOne, result.goodsDetailTwo)) //给另外一个fragment发送一下显示用的图片地址
 
-        loadPopData(result)
+        loadPopData(result) //加载弹框内的数据
     }
 
     /*
@@ -151,16 +153,16 @@ class GoodsDetailTabOneFragment : BaseMvpFragment<GoodsDetailPresenter>(), Goods
     /*
         监听SKU变化及加入购物车事件
      */
-    private fun initObserve(){
+    private fun initObserve() {
         Bus.observe<SkuChangedEvent>()
                 .subscribe {
-                    mSkuSelectedTv.text = mSkuPop.getSelectSku() +GoodsConstant.SKU_SEPARATOR + mSkuPop.getSelectCount()+"件"
+                    mSkuSelectedTv.text = mSkuPop.getSelectSku() + GoodsConstant.SKU_SEPARATOR + mSkuPop.getSelectCount() + "件"
                 }.registerInBus(this)
-//
-//        Bus.observe<AddCartEvent>()
-//                .subscribe {
-//                    addCart()
-//                }.registerInBus(this)
+
+        Bus.observe<AddCartEvent>()
+                .subscribe {
+                    addCart()
+                }.registerInBus(this)
     }
 
     /*
@@ -174,16 +176,17 @@ class GoodsDetailTabOneFragment : BaseMvpFragment<GoodsDetailPresenter>(), Goods
     /*
         加入购物车
      */
-    private fun addCart(){
-//        mCurGoods?.let {
-//            mPersenter.addCart(it.id,
-//                    it.goodsDesc,
-//                    it.goodsDefaultIcon,
-//                    it.goodsDefaultPrice,
-//                    mSkuPop.getSelectCount(),
-//                    mSkuPop.getSelectSku()
-//                    )
-//        }
+    private fun addCart() {
+        //判断是否为null，不为null就取用其参数
+        mCurGoods?.let {
+            mPersenter.addCart(it.id,
+                    it.goodsDesc,
+                    it.goodsDefaultIcon,
+                    it.goodsDefaultPrice,
+                    mSkuPop.getSelectCount(),
+                    mSkuPop.getSelectSku()
+            )
+        }
 
     }
 
@@ -191,7 +194,7 @@ class GoodsDetailTabOneFragment : BaseMvpFragment<GoodsDetailPresenter>(), Goods
         加入购物车 回调
      */
     override fun onAddCartResult(result: Int) {
-//        Bus.send(UpdateCartSizeEvent())
+        Bus.send(UpdateCartSizeEvent())
     }
 
 }

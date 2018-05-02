@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.TextView
 import com.kotlin.base.R
 import com.kotlin.base.ext.onClick
@@ -17,9 +18,12 @@ class HeaderBar @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
-    private var isShowBack: Boolean = true
-    private var titleText: String? = null
-    private var rightText: String? = null
+    //是否显示"返回"图标
+    private var isShowBack = true
+    //Title文字
+    private var titleText:String? = null
+    //右侧文字
+    private var rightText:String? = null
 
     init {
         val typeArray = context.obtainStyledAttributes(attrs, R.styleable.HeaderBar)
@@ -45,7 +49,24 @@ class HeaderBar @JvmOverloads constructor(
         }
     }
 
+    /*
+           获取左侧视图
+        */
+    fun getLeftView(): ImageView {
+        return mLeftIv
+    }
+
+    /*
+        获取右侧视图
+     */
     fun getRightView(): TextView {
         return mRightTv
+    }
+
+    /*
+        获取右侧文字
+     */
+    fun getRightText(): String {
+        return mRightTv.text.toString()
     }
 }
