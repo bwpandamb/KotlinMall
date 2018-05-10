@@ -15,13 +15,15 @@ import com.kotlin.goods.ui.fragment.CategoryFragment
 import com.kotlin.mall.R
 import com.kotlin.mall.ui.fragment.HomeFragment
 import com.kotlin.mall.ui.fragment.MeFragment
+import com.kotlin.message.ui.fragment.MessageFragment
+import com.kotlin.provider.event.MessageBadgeEvent
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.toast
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    private var pressTime:Long = 0
+    private var pressTime: Long = 0
     //Fragment 栈管理
     private val mStack = Stack<Fragment>()
     //主界面Fragment
@@ -31,7 +33,7 @@ class MainActivity : AppCompatActivity() {
     //购物车Fragment
     private val mCartFragment by lazy { CartFragment() }
     //消息Fragment
-    private val mMsgFragment by lazy { HomeFragment() }
+    private val mMsgFragment by lazy { MessageFragment() }
     //"我的"Fragment
     private val mMeFragment by lazy { MeFragment() }
 
@@ -48,7 +50,6 @@ class MainActivity : AppCompatActivity() {
         loadCartSize()
 
 
-
     }
 
     /*
@@ -56,11 +57,11 @@ class MainActivity : AppCompatActivity() {
      */
     private fun initFragment() {
         val manager = supportFragmentManager.beginTransaction()
-        manager.add(R.id.mContaier,mHomeFragment)
-        manager.add(R.id.mContaier,mCategoryFragment)
-        manager.add(R.id.mContaier,mCartFragment)
-        manager.add(R.id.mContaier,mMsgFragment)
-        manager.add(R.id.mContaier,mMeFragment)
+        manager.add(R.id.mContaier, mHomeFragment)
+        manager.add(R.id.mContaier, mCategoryFragment)
+        manager.add(R.id.mContaier, mCartFragment)
+        manager.add(R.id.mContaier, mMsgFragment)
+        manager.add(R.id.mContaier, mMeFragment)
         manager.commit()
 
         mStack.add(mHomeFragment)
@@ -75,8 +76,8 @@ class MainActivity : AppCompatActivity() {
     /*
         初始化底部导航切换事件
      */
-    private fun initBottomNav(){
-        mBottomNavBar.setTabSelectedListener(object : BottomNavigationBar.OnTabSelectedListener{
+    private fun initBottomNav() {
+        mBottomNavBar.setTabSelectedListener(object : BottomNavigationBar.OnTabSelectedListener {
             override fun onTabReselected(position: Int) {
             }
 
@@ -96,7 +97,7 @@ class MainActivity : AppCompatActivity() {
      */
     private fun changeFragment(position: Int) {
         val manager = supportFragmentManager.beginTransaction()
-        for (fragment in mStack){
+        for (fragment in mStack) {
             manager.hide(fragment)
         }
         manager.show(mStack[position])
@@ -106,25 +107,25 @@ class MainActivity : AppCompatActivity() {
     /*
         初始化监听，购物车数量变化及消息标签是否显示
      */
-    private fun initObserve(){
+    private fun initObserve() {
         Bus.observe<UpdateCartSizeEvent>()
                 .subscribe {
                     loadCartSize()
                 }.registerInBus(this)
 
-//        Bus.observe<MessageBadgeEvent>()
-//                .subscribe {
-//                    t: MessageBadgeEvent ->
-//                    run {
-//                        mBottomNavBar.checkMsgBadge(t.isVisible)
-//                    }
-//                }.registerInBus(this)
+        Bus.observe<MessageBadgeEvent>()
+                .subscribe {
+                    t: MessageBadgeEvent ->
+                    run {
+                        mBottomNavBar.checkMsgBadge(t.isVisible)
+                    }
+                }.registerInBus(this)
     }
 
     /*
         加载购物车数量
      */
-    private fun loadCartSize(){
+    private fun loadCartSize() {
         mBottomNavBar.checkCartBadge(AppPrefsUtils.getInt(GoodsConstant.SP_CART_SIZE))
     }
 
@@ -142,10 +143,10 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onBackPressed() {
         val time = System.currentTimeMillis()
-        if (time - pressTime > 2000){
+        if (time - pressTime > 2000) {
             toast("再按一次退出程序")
             pressTime = time
-        } else{
+        } else {
             AppManager.instance.exitApp(this)
         }
     }

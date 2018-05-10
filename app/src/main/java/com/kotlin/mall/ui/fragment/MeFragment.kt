@@ -10,6 +10,8 @@ import com.kotlin.base.ui.fragment.BaseFragment
 import com.kotlin.base.utils.AppPrefsUtils
 import com.kotlin.mall.R
 import com.kotlin.mall.ui.activity.SettingActivity
+import com.kotlin.order.common.OrderConstant
+import com.kotlin.order.common.OrderStatus
 import com.kotlin.order.ui.activity.OrderActivity
 import com.kotlin.order.ui.activity.ShipAddressActivity
 import com.kotlin.provider.common.ProviderConstant
@@ -42,9 +44,9 @@ class MeFragment : BaseFragment(), View.OnClickListener {
     private fun initView() {
         mUserIconIv.onClick(this)
 //        mUserNameTv.onClick(this)
-//        mWaitPayOrderTv.onClick(this)
-//        mWaitConfirmOrderTv.onClick(this)
-//        mCompleteOrderTv.onClick(this)
+        mWaitPayOrderTv.onClick(this)
+        mWaitConfirmOrderTv.onClick(this)
+        mCompleteOrderTv.onClick(this)
         mAllOrderTv.onClick(this)
         mAddressTv.onClick(this)
 //        mShareTv.onClick(this)
@@ -94,15 +96,15 @@ class MeFragment : BaseFragment(), View.OnClickListener {
 //                }
 //            }
 
-//            R.id.mWaitPayOrderTv -> {
-//                startActivity<OrderActivity>(OrderConstant.KEY_ORDER_STATUS to OrderStatus.ORDER_WAIT_PAY)
-//            }
-//            R.id.mWaitConfirmOrderTv -> {
-//                startActivity<OrderActivity>(OrderConstant.KEY_ORDER_STATUS to OrderStatus.ORDER_WAIT_CONFIRM)
-//            }
-//            R.id.mCompleteOrderTv -> {
-//                startActivity<OrderActivity>(OrderConstant.KEY_ORDER_STATUS to OrderStatus.ORDER_COMPLETED)
-//            }
+            R.id.mWaitPayOrderTv -> {
+                startActivity<OrderActivity>(OrderConstant.KEY_ORDER_STATUS to OrderStatus.ORDER_WAIT_PAY)
+            }
+            R.id.mWaitConfirmOrderTv -> {
+                startActivity<OrderActivity>(OrderConstant.KEY_ORDER_STATUS to OrderStatus.ORDER_WAIT_CONFIRM)
+            }
+            R.id.mCompleteOrderTv -> {
+                startActivity<OrderActivity>(OrderConstant.KEY_ORDER_STATUS to OrderStatus.ORDER_COMPLETED)
+            }
             R.id.mAllOrderTv -> {
                 afterLogin {
                     startActivity<OrderActivity>()

@@ -15,7 +15,16 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+
+        manifestPlaceholders = [
+                JPUSH_PKGNAME: "com.kotlin.mall"
+        ]
     }
+
+
+
+
     buildTypes {
         release {
             minifyEnabled false
@@ -42,6 +51,7 @@ dependencies {
     api project(':MessageCenter')
     api project(':GoodsCenter')
     api project(':OrderCenter')
+    api project(':PaySdk')
 }
 repositories {
     mavenCentral()

@@ -4,10 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.kotlin.base.common.AppManager
 import com.kotlin.base.ext.enable
 import com.kotlin.base.ui.activity.BaseMvpActivity
+import com.kotlin.provider.PushProvider
 import com.kotlin.provider.router.RouterPath
 import com.kotlin.user.R
 import com.kotlin.user.data.protocol.UserInfo
@@ -22,6 +24,9 @@ import kotlinx.android.synthetic.main.activity_login.*
 class LoginActivity : BaseMvpActivity<LoginPresenter>(), LoginView, View.OnClickListener {
 
     private var pressTime: Long = 0
+    @Autowired(name = RouterPath.Service.SERVICE_HELLO)
+    @JvmField
+    var mPushProvider: PushProvider? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +71,7 @@ class LoginActivity : BaseMvpActivity<LoginPresenter>(), LoginView, View.OnClick
                 startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
             }
             R.id.mLoginBtn -> {
-                mPersenter.login(mMobileEt.text.toString(), mPwdEt.text.toString(), "")
+                mPersenter.login(mMobileEt.text.toString(), mPwdEt.text.toString(), mPushProvider?.getPushId()?:"")
             }
             R.id.mForgetPwdTv -> {
                 startActivity(Intent(this@LoginActivity, ForgetPwdActivity::class.java))
