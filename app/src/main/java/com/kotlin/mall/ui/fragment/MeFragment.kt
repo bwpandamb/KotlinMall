@@ -10,7 +10,10 @@ import com.kotlin.base.ui.fragment.BaseFragment
 import com.kotlin.base.utils.AppPrefsUtils
 import com.kotlin.mall.R
 import com.kotlin.mall.ui.activity.SettingActivity
+import com.kotlin.order.ui.activity.OrderActivity
+import com.kotlin.order.ui.activity.ShipAddressActivity
 import com.kotlin.provider.common.ProviderConstant
+import com.kotlin.provider.common.afterLogin
 import com.kotlin.provider.common.isLogined
 import com.kotlin.user.ui.activity.LoginActivity
 import com.kotlin.user.ui.activity.UserInfoActivity
@@ -42,8 +45,8 @@ class MeFragment : BaseFragment(), View.OnClickListener {
 //        mWaitPayOrderTv.onClick(this)
 //        mWaitConfirmOrderTv.onClick(this)
 //        mCompleteOrderTv.onClick(this)
-//        mAllOrderTv.onClick(this)
-//        mAddressTv.onClick(this)
+        mAllOrderTv.onClick(this)
+        mAddressTv.onClick(this)
 //        mShareTv.onClick(this)
         mSettingTv.onClick(this)
 
@@ -100,17 +103,17 @@ class MeFragment : BaseFragment(), View.OnClickListener {
 //            R.id.mCompleteOrderTv -> {
 //                startActivity<OrderActivity>(OrderConstant.KEY_ORDER_STATUS to OrderStatus.ORDER_COMPLETED)
 //            }
-//            R.id.mAllOrderTv -> {
-//                afterLogin {
-//                    startActivity<OrderActivity>()
-//                }
-//            }
-//
-//            R.id.mAddressTv -> {
-//                afterLogin {
-//                    startActivity<ShipAddressActivity>()
-//                }
-//            }
+            R.id.mAllOrderTv -> {
+                afterLogin {
+                    startActivity<OrderActivity>()
+                }
+            }
+
+            R.id.mAddressTv -> {
+                afterLogin {
+                    startActivity<ShipAddressActivity>()
+                }
+            }
 //            R.id.mShareTv -> {
 //                toast(R.string.coming_soon_tip)
 //            }

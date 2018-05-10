@@ -7,6 +7,7 @@ import android.os.Environment
 import android.os.PersistableBundle
 import android.util.Log
 import android.view.View
+import com.alibaba.android.arouter.facade.annotation.Route
 import com.bigkoo.alertview.AlertView
 import com.bigkoo.alertview.OnItemClickListener
 import com.jph.takephoto.app.TakePhoto
@@ -26,6 +27,7 @@ import com.kotlin.base.utils.AppPrefsUtils
 import com.kotlin.base.utils.DateUtils
 import com.kotlin.base.utils.GlideUtils
 import com.kotlin.provider.common.ProviderConstant
+import com.kotlin.provider.router.RouterPath
 import com.kotlin.user.R
 import com.kotlin.user.data.protocol.UserInfo
 import com.kotlin.user.injection.component.DaggerUserComponent

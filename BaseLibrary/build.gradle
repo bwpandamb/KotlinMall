@@ -79,7 +79,7 @@ dependencies {
     compile 'com.youth.banner:banner:1.4.10'  //最新版本
     //标签
     compile 'com.github.shts:TriangleLabelView:1.1.2'
-//    //画廊
+    //画廊
     compile 'com.github.crosswall:Android-Coverflow:release-v1.0.4'
     //MulitStateView
     compile "com.github.Kennyc1012:MultiStateView:$multi_state_view_version"

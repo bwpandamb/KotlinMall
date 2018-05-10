@@ -10,6 +10,7 @@ kapt {
     }
 }
 
+
 android {
     compileSdkVersion 26
 

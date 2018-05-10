@@ -2,6 +2,7 @@ package com.kotlin.base.ui.activity
 
 import android.os.Bundle
 import android.widget.Toast
+import com.alibaba.android.arouter.launcher.ARouter
 import com.kotlin.base.common.BaseApplication
 import com.kotlin.base.injection.component.ActivityComponent
 import com.kotlin.base.injection.component.DaggerActivityComponent
@@ -39,6 +40,8 @@ abstract class BaseMvpActivity<T : BasePresenter<*>> : BaseActivity(), BaseView 
         injectComponent()
 
         mLoadindDialog = ProgressLoading.create(this)
+        //ARouter注册
+        ARouter.getInstance().inject(this)
     }
 
     abstract fun injectComponent()

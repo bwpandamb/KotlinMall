@@ -105,7 +105,7 @@ class CartFragment : BaseMvpFragment<CartListPresenter>(), CartListView {
         mSettleAccountsBtn.onClick {
             val cartGoodsList: MutableList<CartGoods> = arrayListOf()
             mAdapter.dataList.filter { it.isSelected }
-                    .mapTo(cartGoodsList) { it } //获取一个新的集合，里面保存了，已经过滤了选中条件的数据
+                    .mapTo(cartGoodsList) { it } //获取一个新的集合，里面保存了过滤了选中条件的数据
             if (cartGoodsList.size == 0) {
                 toast("请选择需要提交的数据")
             } else {
