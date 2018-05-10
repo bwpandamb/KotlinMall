@@ -3,7 +3,6 @@ package com.kotlin.user.ui.activity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import com.kotlin.base.common.AppManager
 import com.kotlin.base.ext.enable
 import com.kotlin.base.ui.activity.BaseMvpActivity
 import com.kotlin.user.R
@@ -48,8 +47,8 @@ class RegisterActivity : BaseMvpActivity<RegisterPresenter>(), RegisterView, Vie
      * 注册回调
      */
     override fun onRegisterResult(result: String) {
-
         Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
+        finish()
     }
 
     override fun onClick(view: View) {
@@ -66,17 +65,6 @@ class RegisterActivity : BaseMvpActivity<RegisterPresenter>(), RegisterView, Vie
 
     }
 
-    override fun onBackPressed() {
-
-        val time = System.currentTimeMillis()
-
-        if (time - pressTime > 2000) {
-            Toast.makeText(this, "再点击一次退出程序", Toast.LENGTH_SHORT).show()
-            pressTime = time
-        } else {
-            AppManager.instance.exitApp(this)
-        }
-    }
 
     /*
         判断按钮是否可用
